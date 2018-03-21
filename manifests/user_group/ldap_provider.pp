@@ -29,7 +29,6 @@ define nifi_registry::user_group::ldap_provider(
     'user_search_filter' => '',
     'user_identity_attribute' => '',
     'user_group_name_attribute' =>'',
-    'identity_strategy' => 'USE_DN',
     'group_search_base' => '',
     'group_object_class' => 'person',
     'group_search_filter' => '',
