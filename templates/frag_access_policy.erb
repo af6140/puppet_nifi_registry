@@ -1,0 +1,10 @@
+ <accessPolicyProvider>
+    <identifier>file-access-policy-provider</identifier>
+    <class>org.apache.nifi.registry.security.authorization.file.FileAccessPolicyProvider</class>
+    <property name="User Group Provider"><%= @user_group_provider %></property>
+    <property name="Authorizations File">./conf/authorizations.xml</property>
+    <property name="Initial Admin Identity"><%= @initial_admin_identity %></property>
+    <% @nifi_access_nodes.map do |index, value| -%>
+    <property name="NiFi Identity <%= index %>"><%= value %></property>
+    <% end -%>
+</accessPolicyProvider>
