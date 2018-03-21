@@ -23,8 +23,8 @@ class nifi_registry::config {
   concat {"${::nifi_registry::conf_dir}/identity-providers.xml":
     ensure => 'present',
     warn => false,
-    owner => 'nifi',
-    group => 'nifi',
+    owner => $::nifi_registry::user,
+    group => $::nifi_registry::group,
     mode => '0644',
     ensure_newline => true,
   }
@@ -49,7 +49,10 @@ class nifi_registry::config {
   }
 
   #authorizers.xml
-  $normailzed_ldap_user_group_configs = deep_merge($::nifi_registry::ldap_identity_provider_properties, $::nifi_registry::ldap_user_group_properties)
+  $merged_ldap_user_group_configs = deep_merge($::nifi_registry::ldap_identity_provider_properties, $::nifi_registry::ldap_user_group_properties)
+  #remove not appliable keys
+  $normailzed_ldap_user_group_configs = delete($merged_ldap_user_group_configs, 'identity_strategy')
+
   nifi_registry::authorizer {'nifi_registry_authorizer':
     ldap_user_group_properties => $normailzed_ldap_user_group_configs,
   }
