@@ -83,7 +83,10 @@ describe 'nifi_registry' do
           it { is_expected.to contain_concat__fragment('user_group_frag_ldap-user-group-provider')
             .with_content(/<property name="Authentication Strategy">SIMPLE<\/property>/)
           }
-
+          it { is_expected.to contain_concat__fragment('user_group_frag_composite-user-group-provider')
+            .with_content(/<property name="User Group Provider 1">file-user-group-provider<\/property>/)
+            .with_content(/<property name="User Group Provider 2">ldap-user-group-provider<\/property>/)
+          }
           it { is_expected.to contain_nifi_registry__idmapping_dn('ldap_id_mapping_0') }
         end
       end

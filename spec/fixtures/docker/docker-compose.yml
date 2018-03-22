@@ -30,17 +30,20 @@ services:
     environment:
       - LDAP_HOST=ldap.nifiregistry
       - LDAP_PORT=10389
-      - LDAP_BIND_DN="uid=admin,ou=system"
+      - LDAP_BIND_DN=uid=admin,ou=system
       - LDAP_BIND_PW=secret
       - LDAP_USER_OBJECT_CLASS=person
       - LDAP_GROUP_OBJECT_CLASS=groupOfUniqueNames
       - LDAP_GROUP_NAME_ATTRIBUTE=cn
       - LDAP_USER_IDENTITY_ATTRIBUTE=cn
       - LDAP_GROUP_MEMBER_ATTRIBUTE=uniqueMember
-      - LDAP_USER_SEARCH_BASE="ou=users, dc=adobe,dc=com"
-      - LDAP_GROUP_SEARCH_BASE="ou=groups, dc=adobe,dc=com"
+      - LDAP_USER_SEARCH_BASE=ou=users,dc=adobe,dc=com
+      - LDAP_GROUP_SEARCH_BASE=ou=groups,dc=adobe,dc=com
+      - LDAP_USER_SEARCH_SCOPE=SUBTREE
+      - LDAP_GROUP_SEARCH_SCOPE=SUBTREE
+      - INITIAL_ADMIN_IDENTITY=CN=docker-nifiregistry-admin
     ports:
-      - 18080:18080
+      - 18443:18443
 networks:
  nifiregistry:
    name: nifiregistry

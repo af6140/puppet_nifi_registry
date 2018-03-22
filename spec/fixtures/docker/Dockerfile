@@ -24,5 +24,6 @@ RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
-WORKDIR /
+WORKDIR /root
+
 ENTRYPOINT ["/entrypoint.sh"]
