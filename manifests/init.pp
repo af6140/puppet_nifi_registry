@@ -23,26 +23,31 @@ class nifi_registry (
   String $initial_admin_identity = undef,
   String $admin_cert_path = undef,
   String $admin_key_path = undef,
+  Optional[Array[Struct[{pattern => String[1], value=>String[1], ensure => Optional[Enum[present,absent]], index => Optional[Integer[0,9]] }],0,9]] $id_mappings = undef,
   Optional[String] $ca_cert_path = undef,
   Optional[String] $server_cert_path = undef,
   Optional[String] $server_key_path = undef,
   String $keystore_pass = 'changeit',
   String $truststore_pass = 'changeit',
   String $key_pass = 'changeit',
-  Integer $http_port = 18080,
-  Integer $https_port = 18443,
-  String $http_host = $::fqdn,
+  Integer $web_http_port = 18080,
+  Integer $web_https_port = 18443,
+  String $http_host = '',
+  String $https_host = '',
   Hash $ldap_identity_provider_properties = {},
   Hash $ldap_user_group_properties = {},
-  Array $nifi_access_nodes = [],
+  Array[String] $nifi_access_nodes = [],
   Boolean $manage_repo = false,
-
+  Boolean $start_service = false,
+  Boolean $client_auth = false,
 ) inherits ::nifi_registry::params {
 
   # validate parameters here
 
-  class { '::nifi_registry::install': }
-  -> class { '::nifi_registry::config': }
-  ~> class { '::nifi_registry::service': }
-  -> Class['::nifi_registry']
+  include '::nifi_registry::install'
+  include '::nifi_registry::config'
+  include '::nifi_registry::service'
+
+  Class['nifi_registry::install'] -> Class['nifi_registry::config'] ~> Class['nifi_registry::service']
+  #-> Class['::nifi_registry']
 }

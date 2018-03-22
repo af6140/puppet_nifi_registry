@@ -3,6 +3,9 @@ require 'spec_helper'
 describe 'nifi_registry' do
   let(:hiera_config) { 'spec/fixtures/hiera/hiera.yaml' }
   hiera = Hiera.new(:config => 'spec/fixtures/hiera/hiera.yaml')
+  id_mappings = hiera.lookup('nifi_registry_profiles::id_mapping', nil, 'common')
+  #ENV["FUTURE_PASER"]= "yes"
+  puts id_mappings
   context 'supported operating systems with no ldap and manage_repo is true' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
@@ -18,6 +21,7 @@ describe 'nifi_registry' do
             :admin_key_path => '/tmp/admin.key',
             :manage_repo => true,
             :nifi_access_nodes => ['nifi-as01a', 'nifi-as02a', 'nifi-as03a'],
+            :id_mappings => [],
           }
         }
 
@@ -63,7 +67,8 @@ describe 'nifi_registry' do
             },
             :ldap_user_group_properties => {
               :user_group_name_attribute => 'member',
-            }
+            },
+            :id_mappings => id_mappings,
           }
         }
 
@@ -78,6 +83,8 @@ describe 'nifi_registry' do
           it { is_expected.to contain_concat__fragment('user_group_frag_ldap-user-group-provider')
             .with_content(/<property name="Authentication Strategy">smiple<\/property>/)
           }
+
+          it { is_expected.to contain_nifi_registry__idmapping_dn('ldap_id_mapping_0') }
         end
       end
     end

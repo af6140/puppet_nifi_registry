@@ -1,0 +1,5 @@
+[puppet3_repo]
+name=puppet3
+baseurl=https://yum.puppetlabs.com/el/7/products/x86_64
+enabled=1
+gpgcheck=0

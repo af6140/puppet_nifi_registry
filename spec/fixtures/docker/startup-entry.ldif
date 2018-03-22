@@ -1,0 +1,46 @@
+version: 1
+
+dn: dc=adobe,dc=com
+dc: adobe
+objectClass: top
+objectClass: domain
+description: The context entry for suffix dc=adobe,dc=com
+
+dn: ou=users,dc=adobe,dc=com
+objectClass: top
+objectClass: organizationalunit
+ou: users
+description: This is the users organizational unit
+
+dn: ou=groups,dc=adobe,dc=com
+objectClass: top
+objectClass: organizationalunit
+ou: groups
+description: This is the groups organizational unit
+
+dn: cn=user001, ou=users, dc=adobe,dc=com
+userPassword:: e01ENX1YMDNNTzFxblpkWWRneWZldUlMUG1RPT0=
+objectClass: top
+objectClass: person
+sn: user001
+cn: user001
+
+dn: cn=user002, ou=users, dc=adobe,dc=com
+userPassword:: e01ENX1YMDNNTzFxblpkWWRneWZldUlMUG1RPT0=
+objectClass: top
+objectClass: person
+sn: user002
+cn: user002
+
+dn: cn=user003, ou=users, dc=adobe,dc=com
+userPassword:: e01ENX1YMDNNTzFxblpkWWRneWZldUlMUG1RPT0=
+objectClass: top
+objectClass: person
+sn: user003
+cn: user003
+
+dn: cn=ldap-marketing, ou=groups, dc=adobe,dc=com
+objectClass: top
+objectClass: groupOfUniqueNames
+uniqueMember: cn=user001,ou=users,dc=adobe,dc=com
+uniqueMember: cn=user002,ou=users,dc=adobe,dc=com

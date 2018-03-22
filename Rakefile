@@ -37,7 +37,7 @@ exclude_paths = [
 # doesn't work in anything since 1.8.7
 #Rake::Task[:coverage].clear
 
-Rake::Task[:lint].clear
+#Rake::Task[:lint].clear
 
 PuppetLint.configuration.fail_on_warnings = true
 PuppetLint.configuration.send('disable_80chars')

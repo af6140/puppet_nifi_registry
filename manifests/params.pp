@@ -16,4 +16,19 @@ class nifi_registry::params {
       fail("${::operatingsystem} not supported")
     }
   }
+
+  # $default_id_mappings = [
+  #   {
+  #     'pattern' => '^CN=(.*?), OU=(.*?), O=(.*?), L=(.*?), ST=(.*?), C=(.*?)$',
+  #     'value' => '$1'
+  #   },
+  #   {
+  #     'pattern' => '^C=(.*?), ST=(.*?), O=(.*?), OU=(.*?), CN=(.*?)$',
+  #     'value' => '$5'
+  #   },
+  #   {
+  #     'pattern' => '^CN=(.*?)$',
+  #     'value' => '$1'
+  #   }
+  # ]
 }

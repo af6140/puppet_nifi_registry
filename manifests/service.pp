@@ -5,8 +5,9 @@
 #
 class nifi_registry::service {
 
-  service { $::nifi_registry::service_name:
-    ensure     => running,
-    enable     => true,
-  }
+    service { $::nifi_registry::service_name:
+      ensure     => running,
+      enable     => true,
+    }
+
 }

@@ -1,0 +1,46 @@
+version: '3.5'
+services:
+  nifildap:
+    hostname: ldap.nifiregistry
+    container_name: ldap
+    image: rwunsch/apacheds-docker:latest
+    environment:
+      - ESTDATA20K=FALSE
+      - INSTALL_AEM_CONFIG=FALSE
+    networks:
+      - nifiregistry
+    volumes:
+      - ./startup-entry.ldif:/bootstrap/startup-entry.ldif:ro
+  nifiregistry:
+    hostname: registry.nifiregistry
+    container_name: registry
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: nifiregistry:latest
+    privileged: true
+    cap_add:
+      - ALL
+    volumes:
+      - ./ssl:/certs:ro
+      - ../../..:/modules/nifi_registry:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    networks:
+      - nifiregistry
+    environment:
+      - LDAP_HOST=ldap.nifiregistry
+      - LDAP_PORT=10389
+      - LDAP_BIND_DN="uid=admin,ou=system"
+      - LDAP_BIND_PW=secret
+      - LDAP_USER_OBJECT_CLASS=person
+      - LDAP_GROUP_OBJECT_CLASS=groupOfUniqueNames
+      - LDAP_GROUP_NAME_ATTRIBUTE=cn
+      - LDAP_USER_IDENTITY_ATTRIBUTE=cn
+      - LDAP_GROUP_MEMBER_ATTRIBUTE=uniqueMember
+      - LDAP_USER_SEARCH_BASE="ou=users, dc=adobe,dc=com"
+      - LDAP_GROUP_SEARCH_BASE="ou=groups, dc=adobe,dc=com"
+    ports:
+      - 18080:18080
+networks:
+ nifiregistry:
+   name: nifiregistry

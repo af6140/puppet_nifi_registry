@@ -1,9 +1,7 @@
-# == Class nifi_registry::config
 #
 # This class is called from nifi_registry for service config.
 #
 class nifi_registry::config {
-
   $min_heap_args = "-Xms${::nifi_registry::min_heap}"
   $max_heap_args = "-Xmx${::nifi_registry::max_heap}"
 
@@ -57,4 +55,48 @@ class nifi_registry::config {
     ldap_user_group_properties => $normailzed_ldap_user_group_configs,
   }
 
+  if ! empty($::nifi_registry::id_mappings) {
+    #use index 0 to override default pattern
+    $nifi_registry::id_mappings.each |$id_index,  $entry| {
+      $conf_index = $entry['index']
+      $conf_ensure = $entry['ensure']
+      if $conf_index {
+        $real_index = $conf_index
+      }else {
+        $real_index = $id_index
+      }
+
+      if $conf_ensure {
+        $real_ensure = $conf_ensure
+      }else {
+        $real_ensure = 'present'
+      }
+      nifi_registry::idmapping_dn { "ldap_id_mapping_${id_index}":
+        pattern => $entry['pattern'],
+        value => $entry['value'],
+        index => $real_index,
+        ensure => $real_ensure,
+        notify => Service[$::nifi_registry::service_name],
+      }
+    }
+
+  }
+
+  #configs
+  #ssl
+  if $::nifi_registry::config_ssl{
+    if ! $::nifi_registry::initial_admin_identity or empty($::nifi_registry::initial_admin_identity) {
+      fail('When setup secure nifi_registry instance, initial admin identity is required')
+    }
+  }
+  nifi_registry::security {'security':
+    conf_dir => $::nifi_registry::conf_dir,
+    cacert_path             => $::nifi_registry::ca_cert_path,
+    node_cert_path          => $::nifi_registry::server_cert_path,
+    node_private_key_path   => $::nifi_registry::server_key_path,
+    initial_admin_cert_path => $::nifi_registry::admin_cert_path,
+    initial_admin_key_path  => $::nifi_registry::admin_key_path,
+    keystore_password  => $::nifi_registry::keystore_pass,
+    key_password       => $::nifi_registry::key_pass,
+  }
 }

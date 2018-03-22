@@ -1,0 +1,6 @@
+[bintraybintray-daweiwang-nifi-1.5]
+name=bintray-daweiwang-nifi-1.5
+baseurl=https://dl.bintray.com/daweiwang/nifi-1.5
+gpgcheck=0
+repo_gpgcheck=0
+enabled=1

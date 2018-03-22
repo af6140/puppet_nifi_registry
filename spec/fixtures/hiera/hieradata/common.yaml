@@ -1,2 +1,5 @@
 ---
-profiles::module::package_name: 'dummypackage'
+nifi_registry_profiles::id_mapping:
+  -
+    pattern: ^C=(.*?), ST=(.*?), O=(.*?), OU=(.*?), CN=(.*?)$
+    value: $5
