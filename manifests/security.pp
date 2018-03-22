@@ -9,6 +9,8 @@ define nifi_registry::security(
   $keystore_password  = $::nifi_registry::keystore_password,
   $key_password       = $::nifi_registry::key_password,
   $client_auth = $::nifi_registry::client_auth,
+  $http_host = $::nifi_registry::web_http_host,
+  $https_host= $::nifi_registry::web_https_host,
 ) {
 
   if $initial_admin_cert_path and $cacert_path and $initial_admin_key_path and $node_cert_path and $node_private_key_path and $keystore_password {
@@ -44,6 +46,8 @@ define nifi_registry::security(
         'nifi.registry.security.needClientAuth'    => "${client_auth}",
         'nifi.registry.web.http.port'              => '',
         'nifi.registry.web.https.port'              => "${::nifi_registry::web_https_port}",
+        'nifi.registry.web.http.host'              => $http_host,
+        'nifi.registry.web.https.host'              => $https_host,
     }
     nifi_registry::config_properties { 'nifi_security_props':
       properties => $security_properties
@@ -60,6 +64,8 @@ define nifi_registry::security(
       'nifi.registry.security.needClientAuth'    => 'false',
       'nifi.registry.web.http.port'              => "${::nifi_registry::web_http_port}",
       'nifi.registry.web.https.port'              => '',
+      'nifi.registry.web.http.host'              => $http_host,
+      'nifi.registry.web.https.host'              => $https_host,
     }
     nifi_registry::config_properties { 'nifi_security_props':
       properties => $security_properties
