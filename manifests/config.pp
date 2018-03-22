@@ -41,6 +41,9 @@ class nifi_registry::config {
   #id provider configs is optional
   # identity provider
   if ! empty($::nifi_registry::ldap_identity_provider_properties) {
+    if $::nifi_registry::ldap_identity_provider_properties['authentication_strategy'] {
+      assert_type(ENUM['ANONYMOUS', 'SIMPLE', 'LDAPS', 'START_TLS'], $::nifi_registry::ldap_identity_provider_properties['authentication_strategy'])
+    }
     nifi_registry::ldap_provider { 'ldap_provider':
       provider_properties => $::nifi_registry::ldap_identity_provider_properties,
     }
@@ -50,6 +53,10 @@ class nifi_registry::config {
   $merged_ldap_user_group_configs = deep_merge($::nifi_registry::ldap_identity_provider_properties, $::nifi_registry::ldap_user_group_properties)
   #remove not appliable keys
   $normailzed_ldap_user_group_configs = delete($merged_ldap_user_group_configs, 'identity_strategy')
+
+  if $normailzed_ldap_user_group_configs['authentication_strategy'] {
+    assert_type(ENUM['ANONYMOUS', 'SIMPLE', 'LDAPS', 'START_TLS'], $normailzed_ldap_user_group_configs['authentication_strategy'])
+  }
 
   nifi_registry::authorizer {'nifi_registry_authorizer':
     ldap_user_group_properties => $normailzed_ldap_user_group_configs,

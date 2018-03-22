@@ -63,7 +63,7 @@ describe 'nifi_registry' do
             :admin_key_path => '/tmp/admin.key',
             :manage_repo => false,
             :ldap_identity_provider_properties => {
-              :authentication_strategy => 'smiple',
+              :authentication_strategy => 'SIMPLE',
             },
             :ldap_user_group_properties => {
               :user_group_name_attribute => 'member',
@@ -81,7 +81,7 @@ describe 'nifi_registry' do
           it { is_expected.to contain_nifi_registry__user_group__ldap_provider('ldap_user_group_provider')  }
 
           it { is_expected.to contain_concat__fragment('user_group_frag_ldap-user-group-provider')
-            .with_content(/<property name="Authentication Strategy">smiple<\/property>/)
+            .with_content(/<property name="Authentication Strategy">SIMPLE<\/property>/)
           }
 
           it { is_expected.to contain_nifi_registry__idmapping_dn('ldap_id_mapping_0') }

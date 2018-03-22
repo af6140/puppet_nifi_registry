@@ -59,7 +59,15 @@ define nifi_registry::user_group::ldap_provider(
   $flat_tmp = flatten($tmp)
 
   $normalized_ldap_provider_properties = hash($flat_tmp)
+  #LDAP user group provider 'User Search Scope' must be specified when 'User Search Base' is set
 
+  if ! empty($normalized_ldap_provider_properties['user_search_base']) {
+    assert_type(ENUM['OBJECT','ONE_LEVEL','SUBTREE'], $normalized_ldap_provider_properties['user_search_scope'])
+  }
+
+  if ! empty($normalized_ldap_provider_properties['group_search_base']) {
+    assert_type(ENUM['OBJECT','ONE_LEVEL','SUBTREE'], $normalized_ldap_provider_properties['group_search_scope'])
+  }
 
   concat::fragment { "user_group_frag_${identifier}":
     order   => '03',

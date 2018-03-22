@@ -40,7 +40,7 @@ define nifi_registry::security(
         'nifi.registry.security.keystoreType'      => 'jks',
         'nifi.registry.security.keystorePasswd'    => $keystore_password,
         'nifi.registry.security.keyPasswd'         => $key_password,
-        'nifi.registry.security.truststore'        => "${conf_dir}truststore.jks",
+        'nifi.registry.security.truststore'        => "${conf_dir}/truststore.jks",
         'nifi.registry.security.truststorePasswd'  => $keystore_password,
         'nifi.registry.security.truststoreType'    => 'jks',
         'nifi.registry.security.needClientAuth'    => "${client_auth}",

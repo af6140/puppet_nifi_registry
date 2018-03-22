@@ -8,7 +8,7 @@ define nifi_registry::user_group::composite_provider(
 
   if size(unique($component_providers)) >0 {
     concat::fragment { "user_group_frag_${identifier}":
-      order   => '03',
+      order   => '04',
       target  => "${conf_dir}/authorizers.xml",
       content => template('nifi_registry/user_group_provider/frag_composite_provider.erb'),
     }
