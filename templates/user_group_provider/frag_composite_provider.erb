@@ -1,7 +1,7 @@
 <userGroupProvider>
    <identifier><%= @identifier %></identifier>
    <class><%= @provider_class %></class>
-   <% @component_providers.each do |index, key| -%>
-   <property name="User Group Provider <%= index %>"><%= key %></property>
+   <% @component_providers.each_with_index do |key, index| -%>
+   <property name="User Group Provider <%= index+1 %>"><%= key %></property>
   <% end -%>
 </userGroupProvider>
